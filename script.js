@@ -11,7 +11,7 @@ async function fetchStats() {
 }
 
 function copyScript() {
-  const script = 'loadstring(game:HttpGet("\/\/\/\/\/\/\/\/\/\"))()';
+  const script = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/refs/heads/main/download/main.lua"))()';
   navigator.clipboard.writeText(script).then(() => {
     alert('Msdoors foi copiado para sua área de transferência! ');
   });
