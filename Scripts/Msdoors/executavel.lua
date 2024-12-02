@@ -1,4 +1,3 @@
---// EXECUTANDO ARQUIVO DE EXECUÇÃO PRINCIPAL ".Exe.lua" \\--
 --[[
                                                                                                                      
      ______  _______            ______       _____           _____            _____         _____            ______  
@@ -27,7 +26,7 @@ local Lighting = game:GetService("Lighting")
 
 --// Configurações \\--
 local scriptUrl = "https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/main/Src/Loaders/"
-local vipScriptUrl = "https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/main/Src/Loaders/VipDoors/"
+local vipScriptUrl = "https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/main/Src/VipLoaders/"
 local supportedPlaceIds = {
     [6516141723] = "Doors/lobby.lua", -- Lobby
     [6839171747] = "Doors/hotel.lua", -- Doors
