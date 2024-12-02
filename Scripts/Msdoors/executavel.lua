@@ -36,7 +36,6 @@ local supportedPlaceIds = {
     [12137249458] = "CampoFFA/ArmasFFA.lua", -- Campos de armas FFA
     [5275822877] = "Carrinho+cart-para-Giganoob/CartGiganoob.lua" -- Carinho + Cart Para GigaNoob
 }
-}
 
 local blacklist = { 
     [""] = true, 
