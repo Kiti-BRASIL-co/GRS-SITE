@@ -1,4 +1,21 @@
-{
-    "msdoors-fundo": "100573561401335",
-    "msdoors-nofundo": "112673545263214"
+local MsVariables = {}
+local variables = {
+    ["msdoors-logo"] = "1234567890", -- ID do logo
+    ["msdoors-nofundo"] = "0987654321", -- ID do ícone sem fundo
+    ["msdoors-fundo"] = "1122334455", -- ID do ícone com fundo
+    ["intro-text"] = "MsDoors | V1", -- Texto de introdução
+    ["config-folder"] = ".msdoors/places/lobby" -- Caminho de configuração
+}
+
+function msVariables(key)
+    return variables[key] or nil
+end
+
+function getAllVariables()
+    return variables
+end
+
+return {
+    msVariables = msVariables,
+    getAllVariables = getAllVariables
 }
