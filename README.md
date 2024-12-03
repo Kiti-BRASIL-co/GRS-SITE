@@ -1,17 +1,21 @@
-# **Msdoors[`1.0.0`]**
-- ⭐ **APRESENTAÇÃO**
-> 📄 Um Script Simples que Source Code que usa Orion Lib para Funcionar, fique a vontade para Utilizar os códigos desse Script para fazer o seu.
+# Vanityﾒ𝟶-web
 
-- 🔔 **LEMBRETES**
-> 🟩 A Maioria dos códigos desse Script são do **MsPaint**, portanto você pode ver os códigos originais no [⭐ Repositório do MsPaint](https://github.com/Sc-Rhyan57/mspaint).
+A [Next.js](https://nextjs.org/) project that showcases Vanityﾒ𝟶.
+This site uses [Tailwind CSS](https://tailwindcss.com/) for styling.
 
-> 🟥 Eu e minha equipe não damos suporte para Scrips modificados desse Script, portanto se você estiver usando alguma cópia do Msdoors trate-se de falar com o dono do mesmo!
+### UI Component Libraries used
+- shadcn/ui - [shadcn.com/ui](https://ui.shadcn.com/)
+- magicui - [magicui.design](https://magicui.design)
+- Aceternity UI - [ui.aceternity.com](https://ui.aceternity.com)
 
-# 📂 **SCRIPT**
-> ``Logo Abaixo você tem acesso ao script de forma totalmente gratuita.``
+## Getting Started
 
-# **Scripts**
-> **Msdoors**
-```js
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/refs/heads/main/download/main.lua"))()
+First, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
 ```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
