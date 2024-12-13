@@ -4,7 +4,9 @@ local supportedPlaceIds = {
     [10549820578] = "Doors/Fools23.lua",
     [189707] = "NaturalDisaster/places/game.lua",
     [12137249458] = "CampoFFA/ArmasFFA.lua",
+    [5275822877] = "Carrinho+cart-para-Giganoob/Oi.lua" -- Carinho + Cart Para GigaNoob
 }
+
 
 local scriptUrl = "https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/main/Src/Loaders/"
 local vipScriptUrl = "https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/main/Src/VipLoaders/"
