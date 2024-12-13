@@ -10,7 +10,7 @@ local supportedPlaceIds = {
 
 local scriptUrl = "https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/main/Src/Loaders/"
 local vipScriptUrl = "https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/main/Src/VipLoaders/"
-local Utils = loadstring(game:HttpGet("https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/main/library/shared/Utils.lua"))()
+local Utils = loadstring(game:HttpGet("https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/refs/heads/main/Library/shared/Utils.lua"))()
 
 local function getScriptUrl(placeId, isVip)
     local scriptName = supportedPlaceIds[placeId]
