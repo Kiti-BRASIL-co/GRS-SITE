@@ -38,7 +38,7 @@ local supportedPlaceIds = {
 }
 
 local blacklist = { 
-    ["rhyan571"] = true, 
+    [""] = true, 
     [""] = true 
 }
 
