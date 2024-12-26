@@ -157,24 +157,26 @@ local function verificarBlacklistEVip(statusLabel)
     local player = Players.LocalPlayer
     local playerId = tostring(player.UserId)
     local playerName = player.Name
-
+    print("[Msdoors] • Inicialização Iniciada...")
     enviarNotificacao("MsDoors", "⏳ Verificando Blacklist e vip...", 5)
     atualizarStatus(statusLabel, "Verificando...", Color3.fromRGB(255, 255, 0))
     wait(4)
 
     if blacklist[playerId] or blacklist[playerName] then
-        enviarNotificacao("🚫 MsDoors - Acesso Negado", "Você está na blacklist e não pode usar este script.", 8)
+        print("[Msdoors] • Acesso ao script bloqueado! você está na Blacklist.")
+        enviarNotificacao("MsDoors - Acesso Negado", "Você está na blacklist e não pode usar este script.", 8)
         atualizarStatus(statusLabel, "Acesso Negado", Color3.fromRGB(255, 0, 0))
         return false, false
     end
   
     if vipList[playerId] or vipList[playerName] then
-        enviarNotificacao("⭐ MsDoors - Painel VIP Ativo", "Bem-vindo ao painel VIP!", 5)
+        print("[Msdoors] • Usuário vip detectado...Executando painel vip."]
+        enviarNotificacao("MsDoors - Painel VIP Ativo", "Bem-vindo ao painel VIP!", 5)
         atualizarStatus(statusLabel, "Usuário VIP Acessado", Color3.fromRGB(0, 255, 215))
         return true, true
     end
-
-    enviarNotificacao("✅ MsDoors", "Usuário verificado com sucesso!", 5)
+    print("[Msdoors] • Msdoors Iniciado pós verificação do usuário!")
+    enviarNotificacao("MsDoors", "Usuário verificado e autorizado com sucesso!", 5)
     atualizarStatus(statusLabel, "Acesso Garantido", Color3.fromRGB(0, 255, 0))
     return true, false
 end
@@ -184,6 +186,7 @@ local function verificarSuporteAoJogo(placeId, statusLabel)
     local gameName = game:GetService("MarketplaceService"):GetProductInfo(placeId).Name
 
     if not scriptName then
+        print("[Msdoors] • o jogo atual não é suportado pelo msdoors, faça um pedido dele usando nosso Discord! https://discord.gg/nGUHhRZby2")
         enviarNotificacao("MsDoors", "🚫 MsDoors não oferece suporte para " .. gameName .. ".", 8)
         atualizarStatus(statusLabel, "Jogo não suportado", Color3.fromRGB(255, 140, 0))
         return nil, false
