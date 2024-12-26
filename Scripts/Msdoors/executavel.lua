@@ -1,4 +1,6 @@
+--// EXECUTANDO ARQUIVO DE EXECUÇÃO PRINCIPAL ".Exe.lua" \\--
 --[[
+
                                                                                                                      
      ______  _______            ______       _____           _____            _____         _____            ______  
     |      \/       \       ___|\     \  ___|\    \     ____|\    \      ____|\    \    ___|\    \       ___|\     \ 
@@ -13,8 +15,7 @@
     \(          )/         \(    )/       \(    )/        \(    )/         \(    )/      \(     )/      \(    )/     
      '          '           '    '         '    '          '    '           '    '        '     '        '    '      
                                                                                                                      
-                                        Por Rhyan57 💜
-  ]]--
+]]--
 
 --// Serviços \\--
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -25,8 +26,8 @@ local RunService = game:GetService("RunService")
 local Lighting = game:GetService("Lighting")
 
 --// Configurações \\--
-local scriptUrl = "https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/main/Src/Loaders/"
-local vipScriptUrl = "https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/main/Src/VipLoaders/"
+local scriptUrl = "https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/refs/heads/Oldversion/Src/Loaders/Doors/"
+local vipScriptUrl = "https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/main/Src/Loaders/VipDoors/"
 local supportedPlaceIds = {
     [6516141723] = "Doors/lobby.lua", -- Lobby
     [6839171747] = "Doors/hotel.lua", -- Doors
@@ -74,7 +75,7 @@ local function criarPainelDeCarregamento()
     end)
 
     local borderGlow = Instance.new("UIStroke", mainFrame)
-    borderGlow.Thickness = 3
+    borderGlow.Thickness = 2
     borderGlow.Color = Color3.fromRGB(255, 255, 255)
     borderGlow.Transparency = 0.3
 
@@ -82,7 +83,7 @@ local function criarPainelDeCarregamento()
     corner.CornerRadius = UDim.new(0, 20)
 
     local titleLabel = Instance.new("TextLabel", mainFrame)
-    titleLabel.Text = "msdoors.gg"
+    titleLabel.Text = "[ Msdoors ]"
     titleLabel.Size = UDim2.new(1, 0, 0.3, 0)
     titleLabel.BackgroundTransparency = 1
     titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -93,7 +94,8 @@ local function criarPainelDeCarregamento()
     local pulseTweenInfo = TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut, -1, true)
     local titlePulseTween = TweenService:Create(titleLabel, pulseTweenInfo, {TextTransparency = 0.2})
     titlePulseTween:Play()
-  
+
+    -- Imagem rotativa na frente do quadrado
     local rotatingImage = Instance.new("ImageLabel", screenGui)
     rotatingImage.Size = UDim2.new(0, 120, 0, 120)
     rotatingImage.Position = UDim2.new(0.5, 0, 0.6, -40)
@@ -116,7 +118,7 @@ local function criarPainelDeCarregamento()
     statusLabel.TextStrokeTransparency = 0.8
 
     local particles = Instance.new("ParticleEmitter", mainFrame)
-    particles.Texture = "rbxassetid://7733992358"
+    particles.Texture = "rbxassetid://133997875469993"
     particles.LightEmission = 1
     particles.Size = NumberSequence.new(0.2, 0.5)
     particles.Lifetime = NumberRange.new(1, 2)
@@ -135,7 +137,7 @@ local function atualizarStatus(statusLabel, texto, cor)
 end
 
 local function ocultarPainel(screenGui, mainFrame, blurEffect)
-    wait(2)
+    wait(2) 
     local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
     local tween = TweenService:Create(mainFrame, tweenInfo, {Size = UDim2.new(0, 0, 0, 0), Transparency = 1})
     tween:Play()
@@ -157,23 +159,24 @@ local function verificarBlacklistEVip(statusLabel)
     local player = Players.LocalPlayer
     local playerId = tostring(player.UserId)
     local playerName = player.Name
-    enviarNotificacao("MsDoors", "⏳ Verificando Blacklist e vip...", 5)
+
+    enviarNotificacao("MsDoors", "⏳ Verificando blacklist e VIP...", 5)
     atualizarStatus(statusLabel, "Verificando...", Color3.fromRGB(255, 255, 0))
-    wait(4)
+    wait(3)
 
     if blacklist[playerId] or blacklist[playerName] then
-        print("[Msdoors] • Acesso ao script bloqueado! você está na Blacklist.")
-        enviarNotificacao("MsDoors - Acesso Negado", "Você está na blacklist e não pode usar este script.", 8)
+        enviarNotificacao("🚫 MsDoors - Acesso Negado", "Você está na blacklist e não pode usar este script.", 8)
         atualizarStatus(statusLabel, "Acesso Negado", Color3.fromRGB(255, 0, 0))
         return false, false
     end
-  
+
     if vipList[playerId] or vipList[playerName] then
-        enviarNotificacao("MsDoors - Painel VIP Ativo", "Bem-vindo ao painel VIP!", 5)
+        enviarNotificacao("⭐ MsDoors - Painel VIP Ativo", "Bem-vindo ao painel VIP!", 5)
         atualizarStatus(statusLabel, "Usuário VIP Acessado", Color3.fromRGB(0, 255, 215))
         return true, true
-  end
-    enviarNotificacao("MsDoors", "Usuário verificado e autorizado com sucesso!", 5)
+    end
+
+    enviarNotificacao("✅ MsDoors", "Usuário verificado com sucesso!", 5)
     atualizarStatus(statusLabel, "Acesso Garantido", Color3.fromRGB(0, 255, 0))
     return true, false
 end
