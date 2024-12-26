@@ -26,7 +26,7 @@ local RunService = game:GetService("RunService")
 local Lighting = game:GetService("Lighting")
 
 --// Configurações \\--
-local scriptUrl = "1https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/refs/heads/main/Src/Loaders/"
+local scriptUrl = "https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/refs/heads/main/Src/Loaders/"
 local vipScriptUrl = "https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/main/Src/Loaders/VipDoors/"
 local supportedPlaceIds = {
     [6516141723] = "Doors/lobby.lua", -- Lobby
@@ -35,7 +35,7 @@ local supportedPlaceIds = {
     [110258689672367] = "Doors/OldLobby.lua", -- Pre Hotel+
     [189707] = "NaturalDisaster/places/game.lua", -- Natural Disaster
     [12137249458] = "CampoFFA/ArmasFFA.lua", -- Campos de armas FFA
-    [5275822877] = "Carrinho+cart-para-Giganoob/CartGiganoob.lua" -- Carinho + Cart Para GigaNoob
+    [5275822877] = "Carrinho%2Bcart-para-Giganoob/CartGiganoob.lua" -- Carinho + Cart Para GigaNoob
 }
 
 local blacklist = { 
