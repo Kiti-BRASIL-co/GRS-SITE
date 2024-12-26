@@ -157,7 +157,6 @@ local function verificarBlacklistEVip(statusLabel)
     local player = Players.LocalPlayer
     local playerId = tostring(player.UserId)
     local playerName = player.Name
-    print("[Msdoors] • Inicialização Iniciada...")
     enviarNotificacao("MsDoors", "⏳ Verificando Blacklist e vip...", 5)
     atualizarStatus(statusLabel, "Verificando...", Color3.fromRGB(255, 255, 0))
     wait(4)
@@ -170,12 +169,10 @@ local function verificarBlacklistEVip(statusLabel)
     end
   
     if vipList[playerId] or vipList[playerName] then
-        print("[Msdoors] • Usuário vip detectado...Executando painel vip."]
         enviarNotificacao("MsDoors - Painel VIP Ativo", "Bem-vindo ao painel VIP!", 5)
         atualizarStatus(statusLabel, "Usuário VIP Acessado", Color3.fromRGB(0, 255, 215))
         return true, true
-    end
-    print("[Msdoors] • Msdoors Iniciado pós verificação do usuário!")
+  end
     enviarNotificacao("MsDoors", "Usuário verificado e autorizado com sucesso!", 5)
     atualizarStatus(statusLabel, "Acesso Garantido", Color3.fromRGB(0, 255, 0))
     return true, false
@@ -186,7 +183,6 @@ local function verificarSuporteAoJogo(placeId, statusLabel)
     local gameName = game:GetService("MarketplaceService"):GetProductInfo(placeId).Name
 
     if not scriptName then
-        print("[Msdoors] • o jogo atual não é suportado pelo msdoors, faça um pedido dele usando nosso Discord! https://discord.gg/nGUHhRZby2")
         enviarNotificacao("MsDoors", "🚫 MsDoors não oferece suporte para " .. gameName .. ".", 8)
         atualizarStatus(statusLabel, "Jogo não suportado", Color3.fromRGB(255, 140, 0))
         return nil, false
