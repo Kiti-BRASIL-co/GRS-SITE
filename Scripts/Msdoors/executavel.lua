@@ -26,7 +26,7 @@ local RunService = game:GetService("RunService")
 local Lighting = game:GetService("Lighting")
 
 --// Configurações \\--
-local scriptUrl = "https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/refs/heads/Oldversion/Src/Loaders/Doors/"
+local scriptUrl = "1https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/refs/heads/main/Src/Loaders/"
 local vipScriptUrl = "https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/main/Src/Loaders/VipDoors/"
 local supportedPlaceIds = {
     [6516141723] = "Doors/lobby.lua", -- Lobby
