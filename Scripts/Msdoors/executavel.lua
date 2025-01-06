@@ -16,7 +16,10 @@
      '          '           '    '         '    '          '    '           '    '        '     '        '    '      
                                                                                                                      
 ]]--
-
+if _G.OrionLibLoaded then
+    warn("[Msdoors] • Script já está carregado!")
+    return
+end
 --// Serviços \\--
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local StarterGui = game:GetService("StarterGui")
