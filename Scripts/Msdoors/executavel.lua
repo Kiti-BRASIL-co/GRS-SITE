@@ -1,3 +1,4 @@
+
 --// EXECUTANDO ARQUIVO DE EXECUÇÃO PRINCIPAL ".Exe.lua" \\--
 --[[
 
@@ -20,7 +21,12 @@ if _G.OrionLibLoaded then
     warn("[Msdoors] • Script já está carregado!")
     return
 end
---// Serviços \\--
+if _G.MsdoorsLoaded then
+    return warn("[Msdoors] • Msdoors já está em execução!")
+end
+
+_G.MsdoorsLoaded = true
+
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local StarterGui = game:GetService("StarterGui")
 local Players = game:GetService("Players")
@@ -28,223 +34,227 @@ local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
 local Lighting = game:GetService("Lighting")
 
---// Configurações \\--
-local scriptUrl = "https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/refs/heads/main/Src/Loaders/"
-local vipScriptUrl = "https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/main/Src/Loaders/VipDoors/"
-local supportedPlaceIds = {
-    [6516141723] = "Doors/lobby.lua", -- Lobby
-    [6839171747] = "Doors/hotel.lua", -- Doors
-    [10549820578] = "Doors/Fools23.lua", -- Fools2023
-    [110258689672367] = "Doors/OldLobby.lua", -- Pre Hotel+
-    [189707] = "NaturalDisaster/places/game.lua", -- Natural Disaster
-    [12137249458] = "CampoFFA/ArmasFFA.lua", -- Campos de armas FFA
-    [5275822877] = "Carrinho%2Bcart-para-Giganoob/CartGiganoob.lua", -- Carinho + Cart Para GigaNoob
-    [9285238704] = "Raceclicker/game.lua",
+local SCRIPT_URL = "https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/refs/heads/main/Src/Loaders/"
+local SUPPORTED_GAMES = {
+    [6516141723] = "Doors/lobby.lua",
+    [6839171747] = "Doors/hotel.lua", 
+    [10549820578] = "Doors/Fools23.lua",
+    [110258689672367] = "Doors/OldLobby.lua",
+    [189707] = "NaturalDisaster/places/game.lua",
+    [12137249458] = "CampoFFA/ArmasFFA.lua",
+    [5275822877] = "Carrinho%2Bcart-para-Giganoob/CartGiganoob.lua",
+    [9285238704] = "Raceclicker/game.lua"
 }
 
-local blacklist = { 
-    [""] = true, 
-    [""] = true 
-}
-
-local vipList = {
-    [""] = true,
-    [""] = true
-}
-
-local function criarPainelDeCarregamento()
-    local blurEffect = Instance.new("BlurEffect", Lighting)
-    blurEffect.Size = 15
-
-    local screenGui = Instance.new("ScreenGui", Players.LocalPlayer:WaitForChild("PlayerGui"))
-    screenGui.Name = "LoadingScreen"
-    screenGui.ResetOnSpawn = false
-
-    local mainFrame = Instance.new("Frame", screenGui)
-    mainFrame.Size = UDim2.new(0, 350, 0, 300)
-    mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-    mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-    mainFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-    mainFrame.BorderSizePixel = 0
-    mainFrame.ClipsDescendants = true
-
-    local gradient = Instance.new("UIGradient", mainFrame)
-    gradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(138, 43, 226)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 191, 255))
+local function notify(title, message, tipo)
+    local types = {
+        success = Color3.fromRGB(0, 255, 128),
+        warning = Color3.fromRGB(255, 128, 0),
+        error = Color3.fromRGB(255, 0, 0)
     }
-    gradient.Rotation = 45
-    RunService.RenderStepped:Connect(function(deltaTime)
-        gradient.Rotation = gradient.Rotation + deltaTime * 15
-    end)
-
-    local borderGlow = Instance.new("UIStroke", mainFrame)
-    borderGlow.Thickness = 2
-    borderGlow.Color = Color3.fromRGB(255, 255, 255)
-    borderGlow.Transparency = 0.3
-
-    local corner = Instance.new("UICorner", mainFrame)
-    corner.CornerRadius = UDim.new(0, 20)
-
-    local titleLabel = Instance.new("TextLabel", mainFrame)
-    titleLabel.Text = "[ Msdoors ]"
-    titleLabel.Size = UDim2.new(1, 0, 0.3, 0)
-    titleLabel.BackgroundTransparency = 1
-    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    titleLabel.Font = Enum.Font.GothamBold
-    titleLabel.TextSize = 24
-    titleLabel.TextStrokeTransparency = 0.8
-
-    local pulseTweenInfo = TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut, -1, true)
-    local titlePulseTween = TweenService:Create(titleLabel, pulseTweenInfo, {TextTransparency = 0.2})
-    titlePulseTween:Play()
-
-    -- Imagem rotativa na frente do quadrado
-    local rotatingImage = Instance.new("ImageLabel", screenGui)
-    rotatingImage.Size = UDim2.new(0, 120, 0, 120)
-    rotatingImage.Position = UDim2.new(0.5, 0, 0.6, -40)
-    rotatingImage.AnchorPoint = Vector2.new(0.5, 0.5)
-    rotatingImage.BackgroundTransparency = 1
-    rotatingImage.Image = "rbxassetid://7733992358"
-
-    local rotationTweenInfo = TweenInfo.new(3, Enum.EasingStyle.Linear, Enum.EasingDirection.In, -1)
-    local rotationTween = TweenService:Create(rotatingImage, rotationTweenInfo, {Rotation = 360})
-    rotationTween:Play()
-
-    local statusLabel = Instance.new("TextLabel", mainFrame)
-    statusLabel.Text = "Status: Verificando..."
-    statusLabel.Size = UDim2.new(1, 0, 0.2, 0)
-    statusLabel.Position = UDim2.new(0, 0, 0.6, 0)
-    statusLabel.BackgroundTransparency = 1
-    statusLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    statusLabel.Font = Enum.Font.Gotham
-    statusLabel.TextSize = 18
-    statusLabel.TextStrokeTransparency = 0.8
-
-    local particles = Instance.new("ParticleEmitter", mainFrame)
-    particles.Texture = "rbxassetid://133997875469993"
-    particles.LightEmission = 1
-    particles.Size = NumberSequence.new(0.2, 0.5)
-    particles.Lifetime = NumberRange.new(1, 2)
-    particles.Rate = 10
-    particles.Speed = NumberRange.new(0, 1)
-    particles.Rotation = NumberRange.new(0, 360)
-    particles.RotSpeed = NumberRange.new(50, 100)
-    particles.Enabled = true
-
-    return screenGui, mainFrame, statusLabel, blurEffect
-end
-
-local function atualizarStatus(statusLabel, texto, cor)
-    statusLabel.Text = "Status: " .. texto
-    statusLabel.TextColor3 = cor
-end
-
-local function ocultarPainel(screenGui, mainFrame, blurEffect)
-    wait(2) 
-    local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-    local tween = TweenService:Create(mainFrame, tweenInfo, {Size = UDim2.new(0, 0, 0, 0), Transparency = 1})
-    tween:Play()
-    tween.Completed:Connect(function()
-        screenGui:Destroy()
-        blurEffect:Destroy()
-    end)
-end
-
-local function enviarNotificacao(titulo, texto, duracao)
+    
     StarterGui:SetCore("SendNotification", {
-        Title = titulo,
-        Text = texto,
-        Duration = duracao
+        Title = "Msdoors | " .. title,
+        Text = message,
+        Duration = 5,
+        Icon = "rbxassetid://6031071053"
     })
 end
 
-local function verificarBlacklistEVip(statusLabel)
-    local player = Players.LocalPlayer
-    local playerId = tostring(player.UserId)
-    local playerName = player.Name
+local function createUI()
+    local gui = Instance.new("ScreenGui")
+    gui.Name = "MsdoorsLoader"
+    gui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
 
-    enviarNotificacao("MsDoors", "⏳ Verificando blacklist e VIP...", 5)
-    atualizarStatus(statusLabel, "Verificando...", Color3.fromRGB(255, 255, 0))
-    wait(3)
+    local blur = Instance.new("BlurEffect", Lighting)
+    blur.Size = 0
+    TweenService:Create(blur, TweenInfo.new(0.5), {Size = 10}):Play()
 
-    if blacklist[playerId] or blacklist[playerName] then
-        enviarNotificacao("🚫 MsDoors - Acesso Negado", "Você está na blacklist e não pode usar este script.", 8)
-        atualizarStatus(statusLabel, "Acesso Negado", Color3.fromRGB(255, 0, 0))
-        return false, false
-    end
+    local main = Instance.new("Frame")
+    main.Name = "Main"
+    main.Size = UDim2.new(0, 0, 0, 200)
+    main.Position = UDim2.new(0.5, 0, 0.5, 0)
+    main.AnchorPoint = Vector2.new(0.5, 0.5)
+    main.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
+    main.BorderSizePixel = 0
+    main.Parent = gui
 
-    if vipList[playerId] or vipList[playerName] then
-        enviarNotificacao("⭐ MsDoors - Painel VIP Ativo", "Bem-vindo ao painel VIP!", 5)
-        atualizarStatus(statusLabel, "Usuário VIP Acessado", Color3.fromRGB(0, 255, 215))
-        return true, true
-    end
+    TweenService:Create(main, 
+        TweenInfo.new(0.5, Enum.EasingStyle.Back), 
+        {Size = UDim2.new(0, 300, 0, 200)}
+    ):Play()
 
-    enviarNotificacao("✅ MsDoors", "Usuário verificado com sucesso!", 5)
-    atualizarStatus(statusLabel, "Acesso Garantido", Color3.fromRGB(0, 255, 0))
-    return true, false
+    local corner = Instance.new("UICorner", main)
+    corner.CornerRadius = UDim.new(0, 8)
+
+    local stroke = Instance.new("UIStroke", main)
+    stroke.Color = Color3.fromRGB(100, 100, 255)
+    stroke.Thickness = 1.5
+
+    local gradient = Instance.new("UIGradient", main)
+    gradient.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(25, 25, 35)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(35, 35, 50))
+    })
+    gradient.Rotation = 45
+
+    local title = Instance.new("TextLabel")
+    title.Name = "Title"
+    title.Text = "MSDOORS"
+    title.Size = UDim2.new(1, 0, 0, 40)
+    title.Position = UDim2.new(0, 0, 0, 20)
+    title.Font = Enum.Font.GothamBold
+    title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    title.TextSize = 28
+    title.BackgroundTransparency = 1
+    title.Parent = main
+
+    local status = Instance.new("TextLabel")
+    status.Name = "Status"
+    status.Size = UDim2.new(1, -40, 0, 20)
+    status.Position = UDim2.new(0, 20, 0, 80)
+    status.Font = Enum.Font.Gotham
+    status.TextColor3 = Color3.fromRGB(200, 200, 200)
+    status.TextSize = 14
+    status.TextXAlignment = Enum.TextXAlignment.Left
+    status.BackgroundTransparency = 1
+    status.Parent = main
+
+    local progressBg = Instance.new("Frame")
+    progressBg.Name = "ProgressBg"
+    progressBg.Size = UDim2.new(1, -40, 0, 6)
+    progressBg.Position = UDim2.new(0, 20, 0, 120)
+    progressBg.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
+    progressBg.BorderSizePixel = 0
+    progressBg.Parent = main
+
+    local progressBgCorner = Instance.new("UICorner", progressBg)
+    progressBgCorner.CornerRadius = UDim.new(1, 0)
+
+    local progress = Instance.new("Frame")
+    progress.Name = "Progress"
+    progress.Size = UDim2.new(0, 0, 1, 0)
+    progress.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
+    progress.BorderSizePixel = 0
+    progress.Parent = progressBg
+
+    local progressCorner = Instance.new("UICorner", progress)
+    progressCorner.CornerRadius = UDim.new(1, 0)
+
+    local progressGradient = Instance.new("UIGradient", progress)
+    progressGradient.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(100, 100, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(150, 150, 255))
+    })
+
+    local version = Instance.new("TextLabel")
+    version.Name = "Version"
+    version.Text = "v1.0.0"
+    version.Size = UDim2.new(1, -40, 0, 20)
+    version.Position = UDim2.new(0, 20, 0, 160)
+    version.Font = Enum.Font.Gotham
+    version.TextColor3 = Color3.fromRGB(150, 150, 150)
+    version.TextSize = 12
+    version.TextXAlignment = Enum.TextXAlignment.Left
+    version.BackgroundTransparency = 1
+    version.Parent = main
+
+    return {
+        gui = gui,
+        blur = blur,
+        main = main,
+        status = status,
+        progress = progress,
+        updateStatus = function(text)
+            status.Text = ""
+            for i = 1, #text do
+                if not status.Parent then break end
+                status.Text = string.sub(text, 1, i)
+                task.wait(0.02)
+            end
+        end,
+        updateProgress = function(value)
+            TweenService:Create(progress, 
+                TweenInfo.new(0.3, Enum.EasingStyle.Quad), 
+                {Size = UDim2.new(value, 0, 1, 0)}
+            ):Play()
+        end,
+        destroy = function()
+            TweenService:Create(blur, TweenInfo.new(0.5), {Size = 0}):Play()
+            TweenService:Create(main, 
+                TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.In), 
+                {Size = UDim2.new(0, 0, 0, 200)}
+            ):Play()
+            task.wait(0.5)
+            gui:Destroy()
+            blur:Destroy()
+        end
+    }
 end
 
-local function verificarSuporteAoJogo(placeId, statusLabel)
-    local scriptName = supportedPlaceIds[placeId]
-    local gameName = game:GetService("MarketplaceService"):GetProductInfo(placeId).Name
-
-    if not scriptName then
-        enviarNotificacao("MsDoors", "🚫 MsDoors não oferece suporte para " .. gameName .. ".", 8)
-        atualizarStatus(statusLabel, "Jogo não suportado", Color3.fromRGB(255, 140, 0))
-        return nil, false
-    end
-    return scriptName
-end
-
-local function carregarScript(url)
-    local sucesso, resposta = pcall(function()
+-- Carregador de Scripts
+local function loadScript(url)
+    local success, response = pcall(function()
         return game:HttpGet(url)
     end)
     
-    if sucesso then
-        local carregarSucesso, erro = pcall(function()
-            loadstring(resposta)()
+    if success then
+        local loadSuccess, error = pcall(function()
+            loadstring(response)()
         end)
         
-        if not carregarSucesso then
-            warn("Erro ao carregar o script: " .. erro)
-            enviarNotificacao("Erro", "Falha ao executar o script.", 5)
+        if not loadSuccess then
+            notify("Erro", "Falha ao executar o script", "error")
+            return false
         end
-    else
-        warn("Erro ao obter o script da URL: " .. url)
-        enviarNotificacao("Erro", "Falha ao baixar o script.", 5)
+        return true
     end
+    
+    notify("Erro", "Falha ao baixar o script", "error")
+    return false
 end
 
-local function iniciarCarregamento()
-    local screenGui, mainFrame, statusLabel, blurEffect = criarPainelDeCarregamento()
-    
-    local acessoLiberado, isVip = verificarBlacklistEVip(statusLabel)
-    
-    if not acessoLiberado then
-        ocultarPainel(screenGui, mainFrame, blurEffect)
-        return
-    end
+local function startMsdoors()
+    local ui = createUI()
+    local currentGame = game.PlaceId
 
-    local placeId = game.PlaceId
-    local scriptName = verificarSuporteAoJogo(placeId, statusLabel)
-    
+    ui.updateStatus("Iniciando Msdoors...")
+    ui.updateProgress(0.2)
+    task.wait(0.5)
+
+    ui.updateStatus("Verificando compatibilidade...")
+    ui.updateProgress(0.4)
+    task.wait(0.5)
+
+    local scriptName = SUPPORTED_GAMES[currentGame]
     if not scriptName then
-        ocultarPainel(screenGui, mainFrame, blurEffect)
+        notify("Aviso", "Este jogo não é suportado!", "warning")
+        ui.updateStatus("Jogo não suportado!")
+        ui.updateProgress(1)
+        task.wait(1)
+        ui.destroy()
         return
     end
 
-    local url = isVip and (vipScriptUrl .. scriptName) or (scriptUrl .. scriptName)
-    atualizarStatus(statusLabel, "Carregando Script...", Color3.fromRGB(0, 191, 255))
-    enviarNotificacao("MsDoors", isVip and "Painel VIP Ativo!" or "Carregando script padrão...", 5)
-    wait(1)
+    ui.updateStatus("Preparando carregamento...")
+    ui.updateProgress(0.6)
+    task.wait(0.5)
+  
+    ui.updateStatus("Carregando script...")
+    ui.updateProgress(0.8)
+    task.wait(0.5)
 
-    carregarScript(url)
-
-    atualizarStatus(statusLabel, "Carregamento Concluído!", Color3.fromRGB(0, 255, 0))
-    enviarNotificacao("MsDoors", "Script carregado com sucesso!", 5)
-    ocultarPainel(screenGui, mainFrame, blurEffect)
+    local success = loadScript(SCRIPT_URL .. scriptName)
+    
+    if success then
+        ui.updateStatus("Script carregado com sucesso!")
+        ui.updateProgress(1)
+        notify("Sucesso", "Script carregado com sucesso!", "success")
+    else
+        ui.updateStatus("Falha ao carregar script!")
+        ui.updateProgress(1)
+    end
+    task.wait(1)
+    ui.destroy()
 end
-
-iniciarCarregamento()
+startMsdoors()
