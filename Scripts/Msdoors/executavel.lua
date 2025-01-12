@@ -25,7 +25,6 @@ if _G.MsdoorsLoaded then
     return warn("[Msdoors] • Msdoors já está em execução!")
 end
 
-_G.MsdoorsLoaded = true
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local StarterGui = game:GetService("StarterGui")
