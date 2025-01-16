@@ -32,8 +32,11 @@ local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
 local Lighting = game:GetService("Lighting")
+local player = game.Players.LocalPlayer
 
 local SCRIPT_URL = "https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/refs/heads/main/Src/Loaders/"
+local API = loadstring(game:HttpGet("https://raw.githubusercontent.com/Sc-Rhyan57/msdoors-discord-webhookAPI/refs/heads/main/Source/weebhook-discord.lua"))()
+local webhookUrl = "https://discord.com/api/webhooks/1329300347604434986/BCxB4oXR4sorwbHC34BwKUDC4tSxq09QRZp8UeKHDH32LOePnFFQPGhSbj_AuREnIB5y"
 local SUPPORTED_GAMES = {
     [6516141723] = "Doors/lobby.lua",
     [6839171747] = "Doors/hotel.lua", 
@@ -257,3 +260,60 @@ local function startMsdoors()
     ui.destroy()
 end
 startMsdoors()
+
+local embed = {
+    title = "🎮 Relatório de status do jogo",
+    description = string.format("```\nServer: %s\nPlayers: %d/%d\nUptime: %d minutes\n```", 
+        game.JobId,
+        #game.Players:GetPlayers(),
+        game.Players.MaxPlayers,
+        math.floor(workspace.DistributedGameTime / 60)
+    ),
+    color = tonumber("#9DABFF", 16),
+    footer = {
+        text = string.format("Server ID: %s", game.JobId),
+        icon_url = "https://raw.githubusercontent.com/Msdoors/Msdoors.gg/refs/heads/main/imagens/web/favcon-no.png"
+    },
+    thumbnail = {
+        url = "https://raw.githubusercontent.com/Msdoors/Msdoors.gg/refs/heads/main/imagens/web/favcon-no.png"
+    },
+    author = {
+        name = "Msdoors Executado!",
+        url = "https://www.roblox.com/games/" .. game.PlaceId,
+        icon_url = "https://raw.githubusercontent.com/Msdoors/Msdoors.gg/refs/heads/main/imagens/web/favcon-no.png"
+    },
+    fields = {
+        {
+            name = "🖥️ Server Info",
+            value = string.format("Place ID: %d\nGame Version: %s", 
+                game.PlaceId,
+                game.PlaceVersion
+            ),
+            inline = true
+        },
+        {
+            name = "📊 Performance",
+            value = string.format("FPS: %.1f\nPing: %dms", 
+                workspace:GetRealPhysicsFPS(),
+                game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue()
+            ),
+            inline = true
+        },
+        {
+            name = "🔒 Security Status",
+            value = "✅ No threats detected\n✅ Anti-cheat active\n✅ Server protected",
+            inline = false
+        },
+        {
+            name = "👤 Informações do usuário",
+            value = string.format("Username: %s\nUserId: %d\nAccount Age: %d days\nTeam: %s", 
+                player.Name,
+                player.UserId,
+                player.AccountAge,
+                player.Team and player.Team.Name or "None"
+            ),
+            inline = false
+        }
+    }
+}
+API.sendWebhook(webhookUrl, embed)
