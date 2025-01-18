@@ -22,9 +22,11 @@ if _G.OrionLibLoaded then
     return
 end
 if _G.MsdoorsLoaded then
-    return warn("[Msdoors] • Msdoors já está em execução!")
+    return warn("[Msdoors] • Já está em execução.")
 end
-
+_G.MsdoorsLoaded = true
+task.wait(2)
+_G.MsdoorsLoaded= false
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local StarterGui = game:GetService("StarterGui")
