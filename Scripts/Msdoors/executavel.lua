@@ -36,7 +36,7 @@ local player = game.Players.LocalPlayer
 
 local SCRIPT_URL = "https://raw.githubusercontent.com/Sc-Rhyan57/Msdoors/refs/heads/main/Src/Loaders/"
 local API = loadstring(game:HttpGet("https://raw.githubusercontent.com/Sc-Rhyan57/msdoors-discord-webhookAPI/refs/heads/main/Source/weebhook-discord.lua"))()
-local webhookUrl = "https://discord.com/api/webhooks/1329300347604434986/BCxB4oXR4sorwbHC34BwKUDC4tSxq09QRZp8UeKHDH32LOePnFFQPGhSbj_AuREnIB5y"
+local webhookUrl = "https://discord.com/api/webhooks/1330003543247159337/ddh4IDsPD7RBlmEO1RGYxoOTi3mNJ0_Xv_DsK_Ojgvf9ycqRK8z3vq2VTJNf_eh9dU0O"
 local SUPPORTED_GAMES = {
     [6516141723] = "Doors/lobby.lua",
     [6839171747] = "Doors/hotel.lua", 
